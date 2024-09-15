@@ -11,7 +11,8 @@ import { validateField } from '../../../utils/validateField';
 const EMPTY_ERRORS = {};
 
 const UserRow = React.memo(({ userId }) => {
-  const user = useUserStore((state) => state.users[userId] || state.stagedUsers[userId]);
+  const user = useUserStore((state) => state.users[userId]);
+  const stagedUser = useUserStore((state) => state.stagedUsers[userId] || {});
   const updateStagedUser = useUserStore((state) => state.updateStagedUser);
   const updateErrorCount = useUserStore((state) => state.updateErrorCount);
   const errorCounts = useUserStore((state) => state.errorCounts[userId] || EMPTY_ERRORS);
@@ -31,14 +32,14 @@ const UserRow = React.memo(({ userId }) => {
     deleteUser(userId);
   }, [userId, deleteUser]);
 
-  if (!user) return null;
+  const getFieldValue = (field) =>
+    stagedUser[field] !== undefined ? stagedUser[field] : user[field];
 
-  console.log({ errorCounts });
   return (
     <Grid container className={styles.userRow} gap={2}>
       <Grid item xs>
         <InputField
-          defaultValue={user.name}
+          defaultValue={getFieldValue('name')}
           onBlur={(e) => handleInputChange('name', e)}
           placeholder="Name"
           error={!!(errorCounts.name?.empty || errorCounts.name?.invalid)}
@@ -46,7 +47,7 @@ const UserRow = React.memo(({ userId }) => {
       </Grid>
       <Grid item xs>
         <InputField
-          defaultValue={user.email}
+          defaultValue={getFieldValue('email')}
           onBlur={(e) => handleInputChange('email', e)}
           placeholder="Email"
           error={!!(errorCounts.email?.empty || errorCounts.email?.invalid)}
@@ -54,7 +55,7 @@ const UserRow = React.memo(({ userId }) => {
       </Grid>
       <Grid item xs>
         <InputField
-          defaultValue={user.phone}
+          defaultValue={getFieldValue('phone')}
           onBlur={(e) => handleInputChange('phone', e)}
           placeholder="Phone"
           error={!!(errorCounts.phone?.empty || errorCounts.phone?.invalid)}
@@ -62,7 +63,7 @@ const UserRow = React.memo(({ userId }) => {
       </Grid>
       <Grid item xs>
         <AutocompleteField
-          defaultValue={user.country}
+          defaultValue={getFieldValue('country')}
           onBlur={(e) => handleInputChange('country', e)}
           options={countryOptions}
           placeholder="Country"
