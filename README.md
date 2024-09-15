@@ -31,9 +31,11 @@ The users data is stored as an object with user IDs as keys, rather than an arra
 ## Quick Start Guide
 
 1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   ```
+
+```bash
+git clone <repository-url>
+```
+
 2. **Navigate to the project directory:**
 
 ```bash
@@ -52,4 +54,4 @@ npm install
 npm run dev
 ```
 
-Open your browser and visit http://localhost:5173 to view the application.
+5. **Open your browser and visit http://localhost:5173 to view the application.**
